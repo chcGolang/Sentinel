@@ -53,6 +53,10 @@ public class NacosConfig {
     private boolean enable;
     @Value("${nacos.namespace-id:public}")
     private String namespace;
+    @Value("${nacos.username:nacos}")
+    private String username;
+    @Value("${nacos.password:nacos}")
+    private String password;
 
     /**
      * 流控规则
@@ -152,8 +156,8 @@ public class NacosConfig {
         if(namespace.length() > 0 && !"public".equals(namespace)){
             properties.put(PropertyKeyConst.NAMESPACE, namespace);
         }
-        properties.put(PropertyKeyConst.USERNAME, "nacos");
-        properties.put(PropertyKeyConst.PASSWORD, "nacos");
+        properties.put(PropertyKeyConst.USERNAME, username);
+        properties.put(PropertyKeyConst.PASSWORD, password);
         return ConfigFactory.createConfigService(properties);
     }
 
