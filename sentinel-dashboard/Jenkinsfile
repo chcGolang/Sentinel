@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    environment {
+        mvnHome = tool name: 'maven3', type: 'maven'
+    }
+    stages {
+        stage('build') {
+            steps {
+                withEnv(["PATH+mvn=${mvnHome}/bin"]) {
+                    sh '''
+                        cd sentinel-dashboard
+                        mvn clean package -Dmaven.test.skip=true
+                        docker build -t chcgolang/sentinel:$BRANCH_NAME .
+                   '''
+                }
+            }
+       }
+
+        stage('docker_push') {
+            steps {
+                sh '''
+                    docker push chcgolang/sentinel:$BRANCH_NAME
+                    docker rmi chcgolang/sentinel:$BRANCH_NAME
+                '''
+            }
+       }
+
+    }
+}
