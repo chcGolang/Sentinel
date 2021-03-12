@@ -60,52 +60,60 @@ public class NacosConfig {
 
     /**
      * 流控规则
+     *
      * @return
      */
     @Bean
-    public FlowRuleConvert flowRuleEntityEncoder() {
-        return new FlowRuleConvert();
+    public Converter<List<FlowRuleEntity>, String> flowRuleEntityEncoder() {
+        return JSON::toJSONString;
     }
+
     @Bean
     public Converter<String, List<FlowRuleEntity>> flowRuleEntityDecoder() {
         return s -> JSON.parseArray(s, FlowRuleEntity.class);
     }
 
+    /**
+     * 授权规则
+     *
+     * @return
+     */
     @Bean
-    public ParamFlowRuleConvert paramFlowRuleEntityEncoder() {
-        return new ParamFlowRuleConvert();
+    public Converter<List<AuthorityRuleEntity>, String> authorRuleEntityEncoder() {
+        return JSON::toJSONString;
     }
 
     @Bean
-    public Converter<String, List<ParamFlowRuleEntity>> paramFlowRuleEntityDecoder() {
-        return s -> JSON.parseArray(s, ParamFlowRule.class).stream().filter(Objects::nonNull).map(ParamFlowRuleEntity::new).collect(Collectors.toList());
+    public Converter<String, List<AuthorityRuleEntity>> authorRuleEntityDecoder() {
+        return s -> JSON.parseArray(s, AuthorityRuleEntity.class);
     }
-
 
     /**
      * 降级规则
      * @return
      */
     @Bean
-    public DegradeRuleConvert degradeRuleEntityEncoder() {
-        return new DegradeRuleConvert();
+    public Converter<List<DegradeRuleEntity>, String> degradeRuleEntityEncoder() {
+        return JSON::toJSONString;
     }
+
     @Bean
     public Converter<String, List<DegradeRuleEntity>> degradeRuleEntityDecoder() {
         return s -> JSON.parseArray(s, DegradeRuleEntity.class);
     }
 
     /**
-     * 授权规则
+     * 热点参数 规则
      * @return
      */
     @Bean
-    public AuthorityRuleConvert authorityRuleConvert() {
-        return new AuthorityRuleConvert();
+    public Converter<List<ParamFlowRuleEntity>, String> paramRuleEntityEncoder() {
+        return JSON::toJSONString;
     }
+
     @Bean
-    public Converter<String, List<AuthorityRuleEntity>> authorityRuleEntityDecoder() {
-        return s -> JSON.parseArray(s, AuthorityRule.class).stream().filter(Objects::nonNull).map(AuthorityRuleEntity::new).collect(Collectors.toList());
+    public Converter<String, List<ParamFlowRuleEntity>> paramRuleEntityDecoder() {
+        return s -> JSON.parseArray(s, ParamFlowRuleEntity.class);
     }
 
     /**
@@ -113,9 +121,10 @@ public class NacosConfig {
      * @return
      */
     @Bean
-    public SystemRuleConvert systemRuleConvert() {
-        return new SystemRuleConvert();
+    public Converter<List<SystemRuleEntity>, String> systemRuleEntityEncoder() {
+        return JSON::toJSONString;
     }
+
     @Bean
     public Converter<String, List<SystemRuleEntity>> systemRuleEntityDecoder() {
         return s -> JSON.parseArray(s, SystemRuleEntity.class);
